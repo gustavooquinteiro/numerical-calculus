@@ -1,6 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+void q01(){
+    int x, y;
+    cin >> x >> y;
+    cout << "Soma: "<< x + y << endl;
+    cout << "Subtração: " << x - y << endl;
+    cout << "Multiplicação: " << x * y << endl;
+    cout << "Divisão: "<< x / y << endl;
+}
+
+void q02(){
+    float base_maior, base_menor, altura;
+    cin >> base_maior >> base_menor >> altura;
+    float resultado = ((base_maior + base_menor) * altura) / 2;
+    cout << resultado << endl;
+}
+
+void q03(){
+    float media = 0;
+    for (int i = 0; i < 3; i++){
+        int nota = 0;
+        cin >> nota;
+        while (nota < 0 || nota > 10)
+            cin >> nota;
+        media += nota;
+    }
+    media = media / 3;
+    if (media < 5)
+        cout << "reprovado" << endl;
+    else
+        cout << "aprovado" << endl;
+    
+}
 void q04(){
     vector<int> array(10);
     for (int i =0; i < 10; i++){
@@ -16,7 +48,6 @@ void q05(){
     for (int i =0; i < 4; i++){
         for (int j =0; j < 4; j++){
             matrix[i][j] = rand() % 1000;
-            cout << matrix[i][j] << " ";
             if (largest < matrix[i][j]){
                 largest = matrix[i][j];
             }
@@ -84,6 +115,6 @@ void q08(){
 }
 
 int main(){
-    q08();
+    q03();
     return 0;
 }
