@@ -29,16 +29,6 @@ int main(){
         }
 
     }
-    for (int x = 0; x < m; x++){
-        for(int y = 0; y < m; y++){
-            cout << coeficientes[x][y] << " ";
-        }
-        cout << endl;
-    }
-    
-    for (int i = 0; i < m; i++)
-        cout <<termos_independentes[i] << " ";
-    cout << endl;
     float resposta[m] = {}; 
     for (int k = 0; k < m; k++){
         resposta[k] = termos_independentes[k]/coeficientes[k][k];
