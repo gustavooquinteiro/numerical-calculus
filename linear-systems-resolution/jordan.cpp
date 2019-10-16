@@ -7,7 +7,7 @@ int main(){
     cout << "Insira o tamanho m para uma matriz quadrada mxm";
     cin >> m;
     float coeficientes[m][m];
-    int termos_independentes[m];
+    float termos_independentes[m];
     for (int x = 0; x < m; x++){
         for(int y = 0; y < m; y++){
             cin >> coeficientes[x][y];
@@ -21,9 +21,11 @@ int main(){
             float n;
             if (x != y){
                 n = coeficientes[y][x]/coeficientes[x][x];
+                coeficientes[y][x] = 0;
                 for (int k = 0; k < m; k++){
-                    coeficientes[y][k] = coeficientes[y][k] - n*coeficientes[x][k];
-                }            
+                    if(x != k)
+                        coeficientes[y][k] = coeficientes[y][k] - n*coeficientes[x][k];
+                }       
                 termos_independentes[y] = termos_independentes[y] -     n*termos_independentes[x];        
             }
         }
