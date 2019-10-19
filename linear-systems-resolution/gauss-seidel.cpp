@@ -5,13 +5,11 @@ using namespace std;
 #define COLS_CRITERIA_SATISFIED 15
 #define NONE_CRITERIA_SATISFIED 5
 #define SASSENFELD_CRITERIA_SATISFIED 20
-float coeficientes[MAX][MAX];
 
-
-int sassenfeld_criteria(int m){
-    float beta[m] = {};
+int sassenfeld_criteria(double coeficientes[][MAX], int m){
+    double beta[m] = {};
     for (int i = 0; i < m; i++){
-        float somatorio = 0;
+        double somatorio = 0;
         for (int j = 0; j < i; j++){
             somatorio += coeficientes[i][j] * beta[j];
         }
@@ -27,13 +25,13 @@ int sassenfeld_criteria(int m){
 }
 
 
-int criteria(int m){
-    float lines[m] = {};
-    float cols[m] = {};
+int criteria(double coeficientes[][MAX], int m){
+    double lines[m] = {};
+    double cols[m] = {};
     int indice = 0;
     for(int i = 0; i < m; i++){
-        float somatorio_line = 0;
-        float somatorio_cols = 0;
+        double somatorio_line = 0;
+        double somatorio_cols = 0;
         for(int j = 0; j < m; j++){
             if (i != j){
                 somatorio_line += coeficientes[i][j];
@@ -49,16 +47,51 @@ int criteria(int m){
         return LINE_CRITERIA_SATISFIED;
     if (cols[m-1] < 1)
         return COLS_CRITERIA_SATISFIED;
-    return sassenfeld_criteria(m);
+    return sassenfeld_criteria(coeficientes, m);
 }
 
 
+vector<double> gauss_seidel_method(double coeficientes[][MAX],
+                                  double termos_independentes[MAX],
+                                  int m, double epsilon){
+    vector<double> x_barra(m, 0);
+    vector<double> x_atual(m, 0);
+    double erro_relativo = 20000000000000;
+    while(erro_relativo > epsilon){
+        for (int x = 0; x < m; x++){
+            double algo = termos_independentes[x];
+            
+            for(int y = 0; y < m; y++){
+                if (x != y)
+                    algo += -coeficientes[x][y] * x_atual[y];
+            }
+            algo = algo/coeficientes[x][x];
+            x_atual[x] = algo;
+        }
+        double diff[m] = {};
+        double bigger = 0.0;
+        double big = 0.0;
+        for (int a = 0; a < m; a++){
+            diff[a] = abs(x_atual[a] - x_barra[a]);
+            if (diff[a] > bigger)
+                bigger = diff[a];
+            if (x_barra[a] > big)
+                big = x_barra[a];
+            x_barra[a] = x_atual[a];
+        }   
+            
+        erro_relativo = bigger/big;
+     } 
+     return x_atual;
+}
+
 int main(){
     int m;
-    float epsilon;
+    double epsilon;
     cin >> m;
     cin >> epsilon;
-    int termos_independentes[m];
+    double coeficientes[MAX][MAX];
+    double termos_independentes[m];
     for (int x = 0; x < m; x++){
         for(int y = 0; y < m; y++){
             cin >> coeficientes[x][y];
@@ -66,7 +99,7 @@ int main(){
     }
     for (int x = 0; x < m; x++)
         cin >> termos_independentes[x];
-    switch(criteria(m)){
+    switch(criteria(coeficientes, m)){
         case LINE_CRITERIA_SATISFIED:
             cout << "Criterio das linhas satisfeito\n";
             break;
@@ -80,36 +113,10 @@ int main(){
             cout << "Nenhum criterio satisfeito\n";
             break;
     }
-    float x_barra[m] = {};
-    float x_atual[m] = {};
-    float erro_relativo = 20000000000000;
-     while(erro_relativo > epsilon){
-        for (int x = 0; x < m; x++){
-            float algo = termos_independentes[x];
-            
-            for(int y = 0; y < m; y++){
-                if (x != y)
-                    algo += -coeficientes[x][y] * x_atual[y];
-            }
-            algo = algo/coeficientes[x][x];
-            x_atual[x] = algo;
-        }
-        float diff[m] = {};
-        float bigger = 0.0;
-        float big = 0.0;
-        for (int a = 0; a < m; a++){
-            diff[a] = abs(x_atual[a] - x_barra[a]);
-            if (diff[a] > bigger)
-                bigger = diff[a];
-            if (x_barra[a] > big)
-                big = x_barra[a];
-            x_barra[a] = x_atual[a];
-        }   
-            
-        erro_relativo = bigger/big;
-     }
-cout << "resposta do sistema com erro de " << epsilon << endl;
-     for (int i = 0; i < m; i++)
-         cout << x_atual[i] << " ";
-     cout << endl;
+   
+    vector<double> x_atual = gauss_seidel_method(coeficientes, termos_independentes, m, epsilon);
+    cout << "resposta do sistema com erro de " << epsilon << endl;
+    for (int i = 0; i < m; i++)
+        cout << x_atual[i] << " ";
+    cout << endl;
 }
