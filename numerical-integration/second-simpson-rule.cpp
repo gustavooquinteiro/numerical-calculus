@@ -12,7 +12,7 @@ double second_simpson_rule(double a, double b, int n){
     for (double i = a; i < b; i+= h)
         x[cont++] = i;
     double somatorio = 0;
-    for (int i = 1; i < n - 1; i++){
+    for (int i = 1; i < n; i++){
         if (i % 3 == 0)
             somatorio += 2* f(x[i]);
         else
