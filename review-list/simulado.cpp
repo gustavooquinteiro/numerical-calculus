@@ -17,9 +17,9 @@ double intervalo(int n){
 	double a = tabela[0][1];
 	double b = tabela[1][1];
 	double h = (b-a)/n;
-	for (long double i = a; i <= b; i += h){
-		x.push_back(i);
-		y.push_back(f(i));
+	for (int i = 0; i <= n; i++){
+		x.push_back(a + i*h);
+		y.push_back(f(a + i*h));
 	}
 	cout << endl;
 	return h;
@@ -41,8 +41,8 @@ long double regra_simpson_composta(int n, double h){
 }
 
 long double extrapolacao(long double i1, long double i2, double n1, double n2){
-	long double integral = (i2 - i1) * pow(n1, 2);
-	integral /= (pow(n2,2) - pow(n1, 2));
+	long double integral = (i2 - i1) * pow(n1, 4);
+	integral /= (pow(n2, 4) - pow(n1, 4));
 	return integral + i2;
 }
 int main(){
@@ -54,9 +54,7 @@ int main(){
 	cin >> n1 >> n2;
 	double h = intervalo(n1);
 	long double i1 = regra_simpson_composta(n1, h);
-	cout << i1 << endl;
 	h = intervalo(n2);
 	long double i2 = regra_simpson_composta(n2, h);
-	cout << i2 << endl;
 	cout << extrapolacao(i1, i2, n1, n2) << endl;
 }
