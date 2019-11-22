@@ -7,12 +7,12 @@ double f(double x){
 
 double second_simpson_rule(double a, double b, int n){
     double h = (b-a)/n;
-    double x[n] = {};
+    vector<double> x;
     int cont=0;
-    for (double i = a; i < b; i+= h)
-        x[cont++] = i;
+    for (int i = 0; i <= n; i++)
+		x.push_back(a + i*h);
     double somatorio = 0;
-    for (int i = 1; i < n - 1; i++){
+    for (int i = 1; i < n; i++){
         if (i % 3 == 0)
             somatorio += 2* f(x[i]);
         else
