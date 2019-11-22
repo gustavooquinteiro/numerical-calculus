@@ -7,13 +7,12 @@ double f(double x){
 
 double first_simpson_rule(double a, double b, int n){
     double h = (b-a)/n;
-    double x[n] = {};
+    vector<double> x;
     double result = 0;
-    int cont = 0;
-    for (double i = a; i < b; i += h)        
-        x[cont++] = i;
+    for (int i = 0; i <= n; i++)        
+        x.push_back(a + i*h);
     double somatorio = 0;
-    for (int i =1; i< n/2; i++){
+    for (int i =1; i <= n/2; i++){
         somatorio += f(x[2*i-1]);
     }
     result += 4*somatorio;
@@ -30,5 +29,5 @@ int main(){
     cin >> a >> b;
     int n;
     cin >> n;
-    cout <<first_simpson_rule(a, b, n) << endl;
+    cout << first_simpson_rule(a, b, n) << endl;
 }
